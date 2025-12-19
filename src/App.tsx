@@ -6,7 +6,7 @@ import { WhatsAppButton } from './components/WhatsAppButton';
 import { AboutModal } from './components/AboutModal';
 import { CartSidebar } from './components/CartSidebar';
 import { CartProvider, useCart } from './contexts/CartContext';
-import { supabase } from './lib/supabase';
+// import { supabase } from './lib/supabase';
 import type { ProductWithVariants } from './lib/database.types';
 import { Loader2, AlertCircle } from 'lucide-react';
 
