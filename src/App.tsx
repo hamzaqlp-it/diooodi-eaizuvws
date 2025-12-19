@@ -34,10 +34,10 @@ function AppContent() {
     fetchProducts();
   }, [selectedCategory]);
 
-  const fetchProducts = async () => {
-    try {
-      setLoading(true);
-      setError(null);
+ const fetchProducts = async () => {
+  setLoading(false);
+  setProducts([]);
+};
 
       const { data: productsData, error: productsError } = await supabase
         .from('products')
