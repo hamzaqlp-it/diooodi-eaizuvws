@@ -22,7 +22,7 @@ function AppContent() {
   const [language, setLanguage] = useState<'fr' | 'ar'>('fr');
   const { clearCart } = useCart();
 
-  // استعادة الإعدادات من localStorage
+  // استعادة إعدادات المستخدم
   useEffect(() => {
     const savedDarkMode = localStorage.getItem('darkMode');
     const savedLanguage = localStorage.getItem('language');
@@ -31,7 +31,7 @@ function AppContent() {
     if (savedLanguage) setLanguage(savedLanguage as 'fr' | 'ar');
   }, []);
 
-  // جلب المنتجات عند تغيير الفئة
+  // جلب المنتجات عند تحميل المكوّن أو تغيير الفئة
   useEffect(() => {
     fetchProducts();
   }, [selectedCategory]);
@@ -64,9 +64,9 @@ function AppContent() {
       }));
 
       setProducts(productsWithVariants);
-    } catch (error) {
-      console.error('Error fetching products:', error);
-      setError(error instanceof Error ? error.message : (language === 'fr' ? 'Une erreur est survenue' : 'حدث خطأ'));
+    } catch (err) {
+      console.error('Error fetching products:', err);
+      setError(err instanceof Error ? err.message : (language === 'fr' ? 'Une erreur est survenue' : 'حدث خطأ'));
       setProducts([]);
     } finally {
       setLoading(false);
@@ -174,7 +174,6 @@ function AppContent() {
 
   return (
     <div className={`min-h-screen ${darkMode ? 'bg-slate-950' : 'bg-white'}`}>
-      {/* بقية واجهة المستخدم كما في النسخة الأصلية */}
       <Header
         darkMode={darkMode}
         toggleDarkMode={toggleDarkMode}
@@ -187,7 +186,20 @@ function AppContent() {
       />
 
       <main className="pt-16">
-        {/* المحتوى الرئيسي ... يمكنك الاحتفاظ بباقي JSX كما هو */}
+        <section className="py-12 px-4">
+          {products.length > 0 ? (
+            <ProductCarousel
+              products={products}
+              onProductClick={setSelectedProduct}
+              darkMode={darkMode}
+              language={language}
+            />
+          ) : (
+            <div className={`text-center py-12 ${darkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+              <p className="text-lg">{t.noProducts}</p>
+            </div>
+          )}
+        </section>
       </main>
 
       <WhatsAppButton darkMode={darkMode} language={language} />
